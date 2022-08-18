@@ -54,10 +54,10 @@ class User(AbstractBaseUser, BaseModel):
 
 class Relation(BaseModel):
     from_user = models.ForeignKey(
-        User, related_name='followings', null=True, verbose_name=_('followed by'), on_delete=models.CASCADE
+        User, related_name='followings', verbose_name=_('followed by'), on_delete=models.CASCADE
     )
     to_user = models.ForeignKey(
-        User, related_name='followers', null=True, verbose_name=_('followed to'), on_delete=models.CASCADE
+        User, related_name='followers', verbose_name=_('followed to'), on_delete=models.CASCADE
     )
 
     class Meta:

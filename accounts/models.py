@@ -3,6 +3,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from jobs.models import Skill, File
 from utils.basemodel import BaseModel
 
 
@@ -77,5 +78,15 @@ class Portfolio(BaseModel):
     class Meta:
         verbose_name = 'portfolio',
         verbose_name_plural = 'portfolios'
+
+
+class PortfolioFile(BaseModel):
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='files')
+    file = models.ForeignKey(File, on_delete=models.CASCADE, related_name='portfolios')
+
+
+class UserSkill(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='skills')
 
 

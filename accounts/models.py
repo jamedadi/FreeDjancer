@@ -36,9 +36,9 @@ class User(AbstractBaseUser, BaseModel):
             'Unselect this instead of deleting accounts.'
         ),
     )
-    bids_left = models.SmallIntegerField(default=5)
-    avatar = models.ImageField(upload_to='avatar/', blank=True)
-    has_kyc = models.BooleanField(default=False)
+    bids_left = models.SmallIntegerField(_('bids left'), default=5)
+    avatar = models.ImageField(_('avatar'), upload_to='avatar/', blank=True)
+    has_kyc = models.BooleanField(_('KYC'), default=False)
 
     class Meta:
         verbose_name = _('user')
@@ -53,8 +53,8 @@ class User(AbstractBaseUser, BaseModel):
 
 
 class Relation(BaseModel):
-    from_user = models.ForeignKey(User, related_name='followings', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(_('followed by'), User, related_name='followings', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(_('followed to'), User, related_name='followers', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('Relation')
@@ -65,7 +65,7 @@ class Relation(BaseModel):
 
 
 class Portfolio(BaseModel):
-    user = models.ForeignKey(User, related_name='portfolios', on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
-    description = models.TextField(max_length=500)
-    cover = models.ImageField(upload_to='portoflio/')
+    user = models.ForeignKey(_('belong user'), User, related_name='portfolios', on_delete=models.CASCADE)
+    title = models.CharField(_('title'), max_length=50)
+    description = models.TextField(_('description'), max_length=500)
+    cover = models.ImageField(_('avatar'), upload_to='portfolio/')

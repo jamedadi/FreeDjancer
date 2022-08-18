@@ -37,7 +37,7 @@ class User(AbstractBaseUser, BaseModel):
         ),
     )
     bids_left = models.SmallIntegerField(default=5)
-    avatar = models.ImageField(upload_to='avatar/')
+    avatar = models.ImageField(upload_to='avatar/', blank=True)
     has_kyc = models.BooleanField(default=False)
 
     class Meta:
@@ -50,3 +50,22 @@ class User(AbstractBaseUser, BaseModel):
         """
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
+
+
+class Relation(BaseModel):
+    from_user = models.ForeignKey(User, related_name='followings', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Relation')
+        verbose_name_plural = _('Relations')
+
+    def __str__(self):
+        return f"{self.from_user} -> {self.to_user}"
+
+
+class Portfolio(BaseModel):
+    user = models.ForeignKey(User, related_name='portfolios', on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    description = models.TextField(max_length=500)
+    cover = models.ImageField(upload_to='portoflio/')

@@ -53,8 +53,12 @@ class User(AbstractBaseUser, BaseModel):
 
 
 class Relation(BaseModel):
-    from_user = models.ForeignKey(_('followed by'), User, related_name='followings', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(_('followed to'), User, related_name='followers', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(
+        User, related_name='followings', null=True, verbose_name=_('followed by'), on_delete=models.CASCADE
+    )
+    to_user = models.ForeignKey(
+        User, related_name='followers', null=True, verbose_name=_('followed to'), on_delete=models.CASCADE
+    )
 
     class Meta:
         verbose_name = _('Relation')
@@ -65,7 +69,13 @@ class Relation(BaseModel):
 
 
 class Portfolio(BaseModel):
-    user = models.ForeignKey(_('belong user'), User, related_name='portfolios', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='portfolios', on_delete=models.CASCADE, verbose_name='belong to')
     title = models.CharField(_('title'), max_length=50)
     description = models.TextField(_('description'), max_length=500)
     cover = models.ImageField(_('avatar'), upload_to='portfolio/')
+
+    class Meta:
+        verbose_name = 'portfolio',
+        verbose_name_plural = 'portfolios'
+
+

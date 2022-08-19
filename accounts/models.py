@@ -1,16 +1,13 @@
+from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from jobs.models import Skill, File
 from utils.basemodel import BaseModel
 
 
-username_validator = UnicodeUsernameValidator()
-
-
-class User(AbstractBaseUser, BaseModel):
+class User(AbstractBaseUser):
+    username_validator = UnicodeUsernameValidator()
     username = models.CharField(
         _('username'),
         max_length=150,
@@ -40,6 +37,10 @@ class User(AbstractBaseUser, BaseModel):
     bids_left = models.SmallIntegerField(_('bids left'), default=5)
     avatar = models.ImageField(_('avatar'), upload_to='avatar/', blank=True)
     has_kyc = models.BooleanField(_('KYC'), default=False)
+
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         verbose_name = _('user')
@@ -81,11 +82,13 @@ class Portfolio(BaseModel):
 
 
 class PortfolioFile(BaseModel):
+    from jobs.models import File
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='files')
     file = models.ForeignKey(File, on_delete=models.CASCADE, related_name='portfolios')
 
 
 class UserSkill(BaseModel):
+    from jobs.models import Skill
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='skills')
 

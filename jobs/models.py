@@ -9,6 +9,7 @@ User = get_user_model()
 
 
 class Project(BaseModel):
+
     PENDING = 0
     OPEN = 1
     NO_FREELANCER_SELECTED = 2
@@ -19,7 +20,7 @@ class Project(BaseModel):
     COMPLETE = 7
     INCOMPLETE = 8
 
-    CHOICES = (
+    STATUS = (
         (PENDING, _('pending')),
         (OPEN, _('open')),
         (NO_FREELANCER_SELECTED, _('no freelancer selected')),
@@ -35,7 +36,7 @@ class Project(BaseModel):
     description = models.TextField(_('description'), max_length=500, )
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('posted by'))
     budget = models.ForeignKey('Budget', on_delete=models.SET_NULL, null=True, verbose_name=_('project budget'))
-    status = models.PositiveSmallIntegerField(choices=CHOICES, verbose_name='status of project', default=PENDING)
+    status = models.PositiveSmallIntegerField(choices=STATUS, verbose_name='status of project', default=PENDING)
     expire_time = models.DateTimeField(verbose_name=_('expire time of project'))
 
 

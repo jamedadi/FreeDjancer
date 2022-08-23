@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'jobs.apps.JobsConfig',
     'package.apps.PackageConfig',
+
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

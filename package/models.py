@@ -14,4 +14,4 @@ class Package(BaseModel):
         verbose_name_plural = 'packages'
 
     def __str__(self):
-        return f"title: {title},bids: {bids},price: {price,}"
+        return self.title

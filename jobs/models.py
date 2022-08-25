@@ -67,7 +67,7 @@ class File(BaseModel):
     name = models.FileField(upload_to='files/')
 
     def __str__(self):
-        return self.name
+        return self.name.url
 
 
 class ProjectFile(BaseModel):

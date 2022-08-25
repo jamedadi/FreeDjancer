@@ -8,6 +8,7 @@ class Package(BaseModel):
     description = models.CharField(max_length=500)
     bids = models.PositiveSmallIntegerField()
     price = models.PositiveBigIntegerField()
+    months = models.PositiveBigIntegerField()
 
     class Meta:
         verbose_name = 'package'

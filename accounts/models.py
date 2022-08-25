@@ -44,6 +44,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
+    
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')

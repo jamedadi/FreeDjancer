@@ -39,11 +39,22 @@ class Project(BaseModel):
     status = models.PositiveSmallIntegerField(choices=STATUS, verbose_name='status of project', default=PENDING)
     expire_time = models.DateTimeField(verbose_name=_('expire time of project'))
 
+    class Meta:
+        verbose_name = 'project'
+        verbose_name_plural = 'projects'
+
 
 class Budget(BaseModel):
     title = models.CharField(_('budget'), max_length=50, unique=True)
     min_price = models.BigIntegerField(_('minimum price of project'))
     max_price = models.BigIntegerField(_('maximum price of project'))
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'budget'
+        verbose_name_plural = 'budgets'
 
 
 class Skill(BaseModel):
@@ -52,15 +63,26 @@ class Skill(BaseModel):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'skill'
+        verbose_name_plural = 'skills'
+        db_table = 'skill'
+
 
 class ProjectSkill(BaseModel):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='skills')
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='projects')
 
+    class Meta:
+        db_table = 'project_skill'
+
 
 class UserBid(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bids')
     projects = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='bids')
+
+    class Meta:
+        db_table = 'user_bid'
 
 
 class File(BaseModel):
@@ -69,7 +91,15 @@ class File(BaseModel):
     def __str__(self):
         return self.name.url
 
+    class Meta:
+        verbose_name = 'file'
+        verbose_name_plural = 'files'
+        db_table = 'file'
+
 
 class ProjectFile(BaseModel):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='files')
     file = models.ForeignKey(File, on_delete=models.PROTECT, related_name='projects')
+
+    class Meta:
+        db_table = 'project_file'

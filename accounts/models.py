@@ -48,6 +48,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+        db_table = 'users'
 
     def get_full_name(self):
         """
@@ -68,6 +69,7 @@ class Relation(BaseModel):
     class Meta:
         verbose_name = _('Relation')
         verbose_name_plural = _('Relations')
+        db_table = 'relation'
 
     def __str__(self):
         return f"{self.from_user} -> {self.to_user}"
@@ -82,6 +84,7 @@ class Portfolio(BaseModel):
     class Meta:
         verbose_name = 'portfolio',
         verbose_name_plural = 'portfolios'
+        db_table = 'portfolio'
 
 
 class PortfolioFile(BaseModel):
@@ -89,10 +92,16 @@ class PortfolioFile(BaseModel):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='files')
     file = models.ForeignKey(File, on_delete=models.CASCADE, related_name='portfolios')
 
+    class Meta:
+        db_table = 'portfolio_file'
+
 
 class UserSkill(BaseModel):
     from jobs.models import Skill
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='skills')
+
+    class Meta:
+        db_table = 'user_skill'
 
 

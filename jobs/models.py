@@ -49,6 +49,9 @@ class Budget(BaseModel):
 class Skill(BaseModel):
     title = models.CharField(_('skill'), max_length=50)
 
+    def __str__(self):
+        return self.title
+
 
 class ProjectSkill(BaseModel):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='skills')
@@ -62,6 +65,9 @@ class UserBid(BaseModel):
 
 class File(BaseModel):
     name = models.FileField(upload_to='files/')
+
+    def __str__(self):
+        return self.name
 
 
 class ProjectFile(BaseModel):

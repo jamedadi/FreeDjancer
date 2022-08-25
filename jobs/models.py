@@ -42,7 +42,8 @@ class Project(BaseModel):
 
 class Budget(BaseModel):
     title = models.CharField(_('budget'), max_length=50, unique=True)
-    price = models.BigIntegerField(_('price of project'))
+    min_price = models.BigIntegerField(_('minimum price of project'))
+    max_price = models.BigIntegerField(_('maximum price of project'))
 
 
 class Skill(BaseModel):

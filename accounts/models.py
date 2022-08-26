@@ -98,8 +98,8 @@ class PortfolioFile(BaseModel):
 
 class UserSkill(BaseModel):
     from jobs.models import Skill
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='skills')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='skills')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='users')
 
     class Meta:
         db_table = 'user_skill'

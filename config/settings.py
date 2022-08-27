@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'jobs.apps.JobsConfig',
     'package.apps.PackageConfig',
 
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -144,6 +145,7 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # Add Session Auth
-        'rest_framework.authentication.SessionAuthentication', )
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }

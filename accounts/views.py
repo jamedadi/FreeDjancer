@@ -6,7 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from accounts.serializers import UserInfoSerializer, UserRegisterSerializer, UserChangePasswordSerializer
+from accounts.serializers import UserInfoSerializer, UserRegisterSerializer, UserChangePasswordSerializer, \
+    UserLiteInfoSerializer
 
 User = get_user_model()
 
@@ -19,6 +20,12 @@ class UserInfoRetrieveUpdateAPIView(RetrieveAPIView, UpdateAPIView):
         return self.request.user
 
 
+class UserLiteInfoAPIView(RetrieveAPIView):
+    serializer_class = UserLiteInfoSerializer
+    lookup_url_kwarg = 'username'
+    lookup_field = 'username'
+
+
 class UserRegistrationCreateAPIView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
@@ -29,6 +36,7 @@ class UserChangePasswordAPIView(UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
 
 
 

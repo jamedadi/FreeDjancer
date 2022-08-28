@@ -35,6 +35,14 @@ class UserInfoSerializer(serializers.ModelSerializer):
         read_only_fields = ['has_kyc', 'bids_left']
 
 
+class UserLiteInfoSerializer(serializers.ModelSerializer):
+    skills = UserSkillSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'avatar', 'skills']
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
     password2 = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})

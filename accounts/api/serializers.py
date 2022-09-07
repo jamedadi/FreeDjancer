@@ -62,7 +62,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         validate_password(attrs.get('password'))
-        # TODO ADD write only for password
         if attrs.get('password') != attrs.get('password2'):
             raise ValidationError('error: passwords are not match')
         attrs.pop('password2')

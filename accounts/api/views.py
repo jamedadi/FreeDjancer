@@ -4,7 +4,7 @@ from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from accounts.api.serializers import UserInfoSerializer, UserRegisterSerializer, UserChangePasswordSerializer, \
+from accounts.api.serializers import UserRetrieveUpdateSerializer, UserRegisterSerializer, UserChangePasswordSerializer, \
     UserReadOnlySerializer, PortfolioSerializer
 
 User = get_user_model()
@@ -12,7 +12,7 @@ User = get_user_model()
 
 class UserInfoRetrieveUpdateAPIView(RetrieveAPIView, UpdateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = UserInfoSerializer
+    serializer_class = UserRetrieveUpdateSerializer
 
     def get_object(self):
         return self.request.user

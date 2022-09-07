@@ -34,7 +34,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'cover']
 
 
-class UserInfoSerializer(serializers.ModelSerializer):
+class UserRetrieveUpdateSerializer(serializers.ModelSerializer):
     skills = UserSkillSerializer(many=True)
 
     class Meta:

@@ -1,7 +1,7 @@
 from django.urls import path
 
-from accounts.api.views import UserInfoRetrieveUpdateAPIView, UserRegistrationCreateAPIView, UserChangePasswordAPIView, \
-    UserLiteInfoAPIView
+from accounts.api.views import UserInfoRetrieveUpdateAPIView, UserRegistrationCreateAPIView,\
+    UserChangePasswordAPIView, UserLiteInfoAPIView
 
 urlpatterns = [
     path('profile/', UserInfoRetrieveUpdateAPIView.as_view(), name='user-info'),

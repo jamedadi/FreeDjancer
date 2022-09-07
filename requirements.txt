@@ -1,3 +1,4 @@
+appmap>=1.1.0.dev0
 asgiref==3.5.2
 Django==3.2
 django-filter==22.1

@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 
 from jobs.models import Project
-from jobs.pagination import StandardSizePagination
-from jobs.serializers import ProjectSerializer
+from jobs.api.pagination import StandardSizePagination
+from jobs.api.serializers import ProjectSerializer
 
 
 class ProjectViewSet(ModelViewSet):

@@ -1,13 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import render
-from rest_framework.generics import get_object_or_404, RetrieveAPIView, UpdateAPIView, CreateAPIView
-from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.generics import RetrieveAPIView, UpdateAPIView, CreateAPIView
+from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
 
-from accounts.serializers import UserInfoSerializer, UserRegisterSerializer, UserChangePasswordSerializer, \
-    UserLiteInfoSerializer
+from accounts.api.serializers import UserInfoSerializer, UserRegisterSerializer, UserChangePasswordSerializer, \
+    UserLiteInfoSerializer, PortfolioSerializer
 
 User = get_user_model()
 
@@ -21,9 +18,14 @@ class UserInfoRetrieveUpdateAPIView(RetrieveAPIView, UpdateAPIView):
 
 
 class UserLiteInfoAPIView(RetrieveAPIView):
-    serializer_class = UserLiteInfoSerializer
-    lookup_url_kwarg = 'username'
+    queryset = User.objects.all()
     lookup_field = 'username'
+    serializer_class = UserLiteInfoSerializer
+
+
+class UserPortfolioListRetrieveView(ListModelMixin, RetrieveModelMixin, ):
+    serializer_class = PortfolioSerializer
+
 
 
 class UserRegistrationCreateAPIView(CreateAPIView):

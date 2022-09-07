@@ -24,8 +24,8 @@ from config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('accounts/', include('accounts.urls')),
-    path('jobs/', include('jobs.urls')),
+    path('accounts/', include('accounts.api.urls')),
+    path('jobs/', include('jobs.api.urls')),
 
     # JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

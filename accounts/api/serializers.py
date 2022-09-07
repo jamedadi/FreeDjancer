@@ -1,3 +1,4 @@
+from django.contrib.admin.utils import lookup_field
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
@@ -5,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import UserSkill
+from accounts.models import UserSkill, Portfolio
 from jobs.models import Skill
 
 User = get_user_model()
@@ -15,7 +16,7 @@ class SkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Skill
-        fields = ['title']
+        fields = ['id', 'title']
 
 
 class UserSkillSerializer(serializers.ModelSerializer):
@@ -23,7 +24,14 @@ class UserSkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSkill
-        fields = ['skill', ]
+        fields = ['id', 'skill', ]
+
+
+class PortfolioSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Portfolio
+        fields = ['id', 'title', 'description', 'cover']
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -31,16 +39,17 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'bids_left', 'avatar', 'has_kyc', 'skills']
+        fields = ['first_name', 'last_name', 'email', 'bids_left', 'avatar', 'has_kyc', 'skills',]
         read_only_fields = ['has_kyc', 'bids_left']
 
 
 class UserLiteInfoSerializer(serializers.ModelSerializer):
     skills = UserSkillSerializer(many=True)
+    portfolios = PortfolioSerializer(many=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'avatar', 'skills']
+        fields = ['username', 'first_name', 'last_name', 'avatar', 'skills', 'portfolios']
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -86,6 +95,4 @@ class UserChangePasswordSerializer(serializers.ModelSerializer):
         instance.password = make_password(validated_data.get('password'))
         instance.save()
 
-
-    # TODO add login Serializer with jwt
 

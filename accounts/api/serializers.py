@@ -43,13 +43,23 @@ class UserInfoSerializer(serializers.ModelSerializer):
         read_only_fields = ['has_kyc', 'bids_left']
 
 
-class UserLiteInfoSerializer(serializers.ModelSerializer):
+class UserReadOnlySerializer(serializers.ModelSerializer):
     skills = UserSkillSerializer(many=True)
     portfolios = PortfolioSerializer(many=True)
+    follower_count = serializers.SerializerMethodField()
+    following_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'avatar', 'skills', 'portfolios']
+        fields = [
+            'username', 'first_name', 'last_name', 'avatar', 'skills', 'portfolios', 'follower_count', 'following_count'
+        ]
+
+    def get_following_count(self, obj):
+        return obj.followings.count()
+
+    def get_follower_count(self, obj):
+        return obj.followers.count()
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

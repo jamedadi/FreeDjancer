@@ -34,7 +34,7 @@ class Project(BaseModel):
 
     title = models.CharField(_('title'), max_length=50)
     description = models.TextField(_('description'), max_length=500, )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('posted by'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('posted by'), related_name='projects')
     budget = models.ForeignKey('Budget', on_delete=models.SET_NULL, null=True, verbose_name=_('project budget'))
     status = models.PositiveSmallIntegerField(choices=STATUS, verbose_name='status of project', default=PENDING)
     expire_time = models.DateTimeField(verbose_name=_('expire time of project'))

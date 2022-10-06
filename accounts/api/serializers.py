@@ -6,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import UserSkill, Portfolio
+from accounts.models import UserSkill, Portfolio, Relation
 from jobs.models import Skill
 
 User = get_user_model()
@@ -45,14 +45,13 @@ class UserRetrieveUpdateSerializer(serializers.ModelSerializer):
 
 class UserReadOnlySerializer(serializers.ModelSerializer):
     skills = UserSkillSerializer(many=True)
-    portfolios = PortfolioSerializer(many=True)
     follower_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
-            'username', 'first_name', 'last_name', 'avatar', 'skills', 'portfolios', 'follower_count', 'following_count'
+            'username', 'first_name', 'last_name', 'avatar', 'skills', 'follower_count', 'following_count'
         ]
 
     def get_following_count(self, obj):
@@ -60,6 +59,28 @@ class UserReadOnlySerializer(serializers.ModelSerializer):
 
     def get_follower_count(self, obj):
         return obj.followers.count()
+
+
+class UserFollowingsSerializer(serializers.ModelSerializer):
+    """
+    A serializer to list following of a user
+    """
+    to_user = serializers.CharField()
+
+    class Meta:
+        model = Relation
+        fields = ['to_user']
+
+
+class UserFollowersSerializer(serializers.ModelSerializer):
+    """
+    A serializer to list followers of a user
+    """
+    from_user = serializers.CharField()
+
+    class Meta:
+        model = Relation
+        fields = ['from_user']
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

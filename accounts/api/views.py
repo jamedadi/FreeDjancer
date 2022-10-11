@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView, CreateAPIView, ListAPIView, DestroyAPIView
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
@@ -30,7 +31,7 @@ class UserAuthenticatedProfileViewSet(RetrieveAPIView, UpdateAPIView):
         return self.request.user
 
 
-class UserAuthenticatedFollowingsAPIView(ListAPIView, DestroyAPIView):
+class UserAuthenticatedFollowingsAPIView(ListAPIView):
     """
     Authenticated User can see own followings and unfollow them.
     """
@@ -47,8 +48,22 @@ class UserAuthenticatedFollowingsAPIView(ListAPIView, DestroyAPIView):
         serializer = self.serializer_class(qs, many=True)
         return Response(serializer.data)
 # TODO : ADD Destroy to Following
-    # def destroy(self, request, *args, **kwargs):
-    #     qs = super().get_queryset()
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class DestroyFollowingAPIView(DestroyAPIView):
+    queryset = Relation.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserFollowingsSerializer
+
+    # TODO check the relation is real or not
+    def get_object(self, *args, **kwargs):
+        instance = Relation.objects.filter(from_user=self.request, to_user=self.lookup_url_kwarg)
+        return super().get_object(instance)
 
 
 class UserAuthenticatedFollowersAPIView(ListAPIView):

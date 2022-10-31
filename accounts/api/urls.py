@@ -2,18 +2,11 @@ from django.urls import path, include
 from rest_framework import routers
 
 from accounts.api.views import UserAuthenticatedProfileViewSet, UserRegistrationCreateAPIView, \
-    UserChangePasswordAPIView, UserReadOnlyViewSet, UserProjectsModelViewSet, UserPortfolioListRetrieveView, \
-    UserAuthenticatedFollowingsAPIView, UserAuthenticatedFollowersAPIView, DestroyFollowingAPIView
+    UserChangePasswordAPIView, UserReadOnlyViewSet,UserAuthenticatedFollowingsAPIView, \
+    UserAuthenticatedFollowersAPIView, DestroyFollowingAPIView
 
 user_info = routers.SimpleRouter()
 user_info.register('user', UserReadOnlyViewSet, basename='user-info')
-
-# user_authenticated_profile = routers.SimpleRouter()
-# user_authenticated_profile.register('profile', UserAuthenticatedProfileViewSet, basename='profile')
-
-
-# user_projects = routers.SimpleRouter()
-# user_projects.register('', UserProjectsModelViewSet, 'user-projects')
 
 
 urlpatterns = [
@@ -26,5 +19,4 @@ urlpatterns = [
 
 
     path('', include(user_info.urls)),
-    # path('', include(user_authenticated_profile.urls))
 ]

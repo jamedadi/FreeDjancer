@@ -35,7 +35,7 @@ class UserAuthenticatedFollowingsAPIView(ListAPIView):
     """
     Authenticated User can see own followings and unfollow them.
     """
-    queryset = Relation.objects.all()
+    queryset = Relation.objects.select_related('to_user').all()
     permission_classes = [IsAuthenticated]
     serializer_class = UserFollowingsSerializer
 

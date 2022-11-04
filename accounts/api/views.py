@@ -70,7 +70,7 @@ class UserAuthenticatedFollowersAPIView(ListAPIView):
     """
     Authenticated User can see own followers
     """
-    queryset = Relation.objects.all()
+    queryset = Relation.objects.select_related('from_user').all()
     permission_classes = [IsAuthenticated]
     serializer_class = UserFollowersSerializer
 

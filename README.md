@@ -20,7 +20,7 @@ A minimal clone of Freelancer.com Back-end
 
 
 ## Create your database
-###Open your postgresql shell with ```psql``` command
+### Open your postgresql shell with ```psql``` command
 
 ### Create Database
 ```sql

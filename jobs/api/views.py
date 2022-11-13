@@ -26,7 +26,7 @@ class UserSkillProjectViewSet(ListModelMixin, GenericViewSet):
     """
     To show all projects by authenticated User skills
     """
-    queryset = Project.objects.all()
+    queryset = Project.objects.prefetch_related('skills__skill').all()
     serializer_class = ProjectSerializer
     pagination_class = StandardSizePagination
     permission_classes = [IsAuthenticated]

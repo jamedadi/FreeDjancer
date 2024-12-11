@@ -115,7 +115,7 @@ class UserSkill(BaseModel):
 
 
 class Employer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
                              related_name='employers')
     company_name = models.CharField(max_length=255, blank=True)
     company_address = models.TextField(blank=True)
@@ -123,3 +123,4 @@ class Employer(models.Model):
 
     def __str__(self):
         return self.user.username
+

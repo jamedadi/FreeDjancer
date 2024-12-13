@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from accounts.models import Portfolio, UserSkill, Relation
+from accounts.models import Portfolio, UserSkill, Relation, Employer
 
 User = get_user_model()
 
@@ -29,3 +29,8 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Relation)
 class RelationAdmin(admin.ModelAdmin):
     list_display = ('from_user', 'to_user')
+
+
+@admin.register(Employer)
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company_name')

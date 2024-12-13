@@ -25,4 +25,4 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['id', 'chat', 'sender', 'text', 'created_at']  # فیلدهای پیام
+        fields = ['id', 'chat', 'sender', 'text', 'created_at']

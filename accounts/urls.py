@@ -1,12 +1,15 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from accounts.api.views import UserAuthenticatedProfileViewSet, \
-    UserRegistrationCreateAPIView, \
-    UserChangePasswordAPIView, UserReadOnlyViewSet, \
-    UserAuthenticatedFollowingsAPIView, \
-    UserAuthenticatedFollowersAPIView, DestroyFollowingAPIView, \
+from accounts.api.views import(
+    UserAuthenticatedProfileViewSet,
+    UserRegistrationCreateAPIView,
+    UserChangePasswordAPIView, UserReadOnlyViewSet,
+    UserAuthenticatedFollowingsAPIView,
+    UserAuthenticatedFollowersAPIView, DestroyFollowingAPIView,
     EmployerRegistrationCreateAPIView, LoginAPIView
+)
+
 
 user_info = routers.SimpleRouter()
 user_info.register('user', UserReadOnlyViewSet, basename='user-info')

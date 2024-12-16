@@ -3,18 +3,13 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView, CreateAPIView, ListAPIView, DestroyAPIView
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView
 
-from accounts.api.serializers import UserRetrieveUpdateSerializer, \
-    UserRegisterSerializer, \
-    UserChangePasswordSerializer, UserReadOnlySerializer, PortfolioSerializer, \
-    UserFollowingsSerializer, \
-    UserFollowersSerializer, EmployerRegisterSerializer
+from accounts.api.serializers import UserRetrieveUpdateSerializer, UserRegisterSerializer, \
+    UserChangePasswordSerializer, UserReadOnlySerializer, PortfolioSerializer, UserFollowingsSerializer, \
+    UserFollowersSerializer
 from accounts.models import Relation
 from jobs.api.serializers import ProjectSerializer
 
@@ -149,18 +144,6 @@ class UserPortfolioListRetrieveView(ListModelMixin, RetrieveModelMixin, ):
 
 class UserRegistrationCreateAPIView(CreateAPIView):
     serializer_class = UserRegisterSerializer
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'username': user.username,
-                'refresh': str(refresh),
-                'access': str(refresh.access_token)
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class UserChangePasswordAPIView(UpdateAPIView):
@@ -169,30 +152,3 @@ class UserChangePasswordAPIView(UpdateAPIView):
 
     def get_object(self):
         return self.request.user
-
-    def update(self, request, *args, **kwargs):
-        response = super().update(request, *args, **kwargs)
-        return Response({
-            'message': 'Password successfully changed!'
-        }, status=status.HTTP_200_OK)
-
-
-class EmployerRegistrationCreateAPIView(CreateAPIView):
-    serializer_class = EmployerRegisterSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            employer = serializer.save()
-            refresh = RefreshToken.for_user(employer)
-            return Response({
-                'username': employer.user.username,
-                'refresh': str(refresh),
-                'access': str(refresh.access_token)
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LoginAPIView(TokenObtainPairView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [AllowAny]

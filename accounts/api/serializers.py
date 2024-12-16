@@ -6,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import UserSkill, Portfolio, Relation, Employer
+from accounts.models import UserSkill, Portfolio, Relation
 from jobs.models import Skill
 
 User = get_user_model()
@@ -98,13 +98,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         attrs.pop('password2')
         return attrs
 
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-        return user
-
 
 class UserChangePasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
@@ -131,18 +124,5 @@ class UserChangePasswordSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.password = make_password(validated_data.get('password'))
         instance.save()
-        return instance
 
 
-
-class EmployerRegisterSerializer(serializers.ModelSerializer):
-    user = UserRegisterSerializer()
-    class Meta:
-        model = Employer
-        fields = ['user', 'company_name', 'company_address']
-
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = UserRegisterSerializer(user_data).create(user_data)
-        employer = Employer.objects.create(user=user, **validated_data)
-        return employer

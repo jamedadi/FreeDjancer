@@ -1,6 +1,7 @@
 from django.contrib.auth.models import UserManager, AbstractUser
-from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 
 from utils.basemodel import BaseModel
@@ -12,8 +13,7 @@ class User(AbstractUser):
         _('username'),
         max_length=150,
         unique=True,
-        help_text=_(
-            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
         validators=[username_validator],
         error_messages={
             'unique': _("A user with that username already exists."),
@@ -25,8 +25,7 @@ class User(AbstractUser):
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
-        help_text=_(
-            'Designates whether the user can log into this admin site.'),
+        help_text=_('Designates whether the user can log into this admin site.'),
     )
     is_active = models.BooleanField(
         _('active'),
@@ -61,12 +60,10 @@ class User(AbstractUser):
 
 class Relation(BaseModel):
     from_user = models.ForeignKey(
-        User, related_name='followings', verbose_name=_('followed by'),
-        on_delete=models.CASCADE
+        User, related_name='followings', verbose_name=_('followed by'), on_delete=models.CASCADE
     )
     to_user = models.ForeignKey(
-        User, related_name='followers', verbose_name=_('followed to'),
-        on_delete=models.CASCADE
+        User, related_name='followers', verbose_name=_('followed to'), on_delete=models.CASCADE
     )
 
     class Meta:
@@ -79,9 +76,7 @@ class Relation(BaseModel):
 
 
 class Portfolio(BaseModel):
-    user = models.ForeignKey(User, related_name='portfolios',
-                             on_delete=models.CASCADE,
-                             verbose_name='belong to')
+    user = models.ForeignKey(User, related_name='portfolios', on_delete=models.CASCADE, verbose_name='belong to')
     title = models.CharField(_('title'), max_length=50)
     description = models.TextField(_('description'), max_length=500)
     cover = models.ImageField(_('avatar'), upload_to='portfolio/')
@@ -94,10 +89,8 @@ class Portfolio(BaseModel):
 
 class PortfolioFile(BaseModel):
     from jobs.models import File
-    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE,
-                                  related_name='files')
-    file = models.ForeignKey(File, on_delete=models.CASCADE,
-                             related_name='portfolios')
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='files')
+    file = models.ForeignKey(File, on_delete=models.CASCADE, related_name='portfolios')
 
     class Meta:
         db_table = 'portfolio_file'
@@ -105,22 +98,10 @@ class PortfolioFile(BaseModel):
 
 class UserSkill(BaseModel):
     from jobs.models import Skill
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             related_name='skills')
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE,
-                              related_name='users')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='skills')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='users')
 
     class Meta:
         db_table = 'user_skill'
 
-
-class Employer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,
-                             related_name='employers')
-    company_name = models.CharField(max_length=255, blank=True)
-    company_address = models.TextField(blank=True)
-    created_at = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.user.username
 
